@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GameProgII_HealthSystemRe_BenF
 {
@@ -82,7 +83,7 @@ namespace GameProgII_HealthSystemRe_BenF
 
 
             int _currentHealth;
-            public int GetCurrentHealth()
+           public int GetCurrentHealth()
             {
                 return _currentHealth;
             }
@@ -92,8 +93,8 @@ namespace GameProgII_HealthSystemRe_BenF
         {
             public float Name { get; set; }
 
-            Health Health;
-            Health Shield;
+            Health Health = new Health(100);
+            Health Shield = new Health(50);
 
             public void TakeDamage(int amount)
             {
@@ -102,9 +103,25 @@ namespace GameProgII_HealthSystemRe_BenF
                     Console.WriteLine("You inputed a negative number!");
                     return;
                 }
+                if (Shield.GetCurrentHealth() <= 0)
+                {
+                    Health.TakeDamage(amount);
 
-                Health.TakeDamage(amount);
+                }
 
+                if (Shield.GetCurrentHealth() > 0)
+                {
+                    if (amount > Shield.GetCurrentHealth())
+                    {
+                        Shield.TakeDamage(amount);
+                        //health += shield; ???
+
+                    }
+                    else
+                    {
+                        Shield.TakeDamage(amount);
+                    }
+                }
             }
 
             public string GetStatusString()
@@ -180,7 +197,16 @@ namespace GameProgII_HealthSystemRe_BenF
             {
                 return _maxShield;
             }
+
         }
+
+        //static void ShowHUD()
+        //{
+        //    Console.ForegroundColor = ConsoleColor.Cyan;
+        //    Console.WriteLine("{0,0}{1,15}{2,20}{3,25}{4,30}", $"Name: {name}", $"Health: {Health.GetCurrentHealth()}", $"Shield: {Shield.GetCurrentHealth()}", $"Level: {level}", $"Status: {GetStatusString()}");
+        //    Console.ForegroundColor = ConsoleColor.White;
+        //    return;
+        //}
 
         static void Main(string[] args)
         {
@@ -188,7 +214,16 @@ namespace GameProgII_HealthSystemRe_BenF
 
             Player player = new Player(name, 100, 50);
 
-
+            while (true)
+            {
+                //ShowHUD();
+            }
         }
+
+        /*
+        I tried and couldn't get it. I don't understand how the get all my values to work. 
+        I feel like I missed an important step in one of the classes I missed being out sick. I've tried searching things up and all that but 
+        I cant seem to get it. There was an attempt!
+        */
     }
 }
